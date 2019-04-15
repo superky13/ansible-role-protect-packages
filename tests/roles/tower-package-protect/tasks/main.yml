@@ -1,0 +1,27 @@
+- name: install yum-plugin-versionlock plugin
+  yum:
+    name: yum-plugin-versionlock 
+    state: installed
+
+- name: determine package dir structure for tower version {{ tower_version }}
+  shell: "find {{ base_repo_dir }}/* -maxdepth 0 -type d | wc -l"
+  register: towerdircount
+  delegate_to: localhost
+ 
+- name: conditionally include package query when packages are in a single dir
+  include_tasks: ansible-tower-dependencies.yml
+  when: "towerdircount == '2'"
+  delegate_to: localhost
+ 
+- name: conditionally include package query when packages are in multiple dirs
+  include_tasks: ansible-tower-separate-dep-dirs.yml
+  when: "towerdircount != '2'"
+  delegate_to: localhost
+
+- name: versionlock postgres packages
+  shell: "yum versionlock {{ item.split('-1PGDG')[0] }}"
+  with_items:
+  - "{{ pgpackages.stdout_lines }}"
+
+- name: versionlock rabbitmq-server packages
+  shell: "yum versionlock rabbitmq-server"

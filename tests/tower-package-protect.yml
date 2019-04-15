@@ -1,0 +1,5 @@
+---
+- name: protect package versions prior to patching 
+  hosts: all
+  roles:
+  - tower-package-protect

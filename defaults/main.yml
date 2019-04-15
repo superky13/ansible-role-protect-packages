@@ -1,0 +1,7 @@
+tower_version: '3.3.0-1'
+base_repo_dir: '/root/ansible-tower-setup-bundle-{{ tower_version }}.el7/bundle/repos'
+base_dir_pg: '{{ base_repo_dir }}/pgdg96'
+base_dir_rabbit: '{{ base_repo_dir }}/rabbitmq_rabbitmq-server'
+
+## newer tower bundle uses a single dir for dependencies
+base_dir_dependencies: '{{ base_repo_dir }}/ansible-tower-dependencies'

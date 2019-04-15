@@ -1,0 +1,4 @@
+- name: query bastion to compile postgresql packages
+  shell: "ls -l {{ base_dir_pg }}/ | grep post | awk '{print $9}'"
+  register: pgpackages
+  delegate_to: localhost
